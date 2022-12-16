@@ -31,7 +31,7 @@ class _RSSMainPictureState extends State<RSSMainPicture> {
   late Future<RssFeed> result;
   Future<RssFeed> giver() async {
     var response = await http
-        .get(Uri.parse("http://www.espncricinfo.com/rss/content/story/feed"));
+        .get(Uri.parse("http://www.espncricinfo.com/rss/content/story/feeds/0.xml"));
     var channel = RssFeed.parse(response.body);
     return channel;
   }
@@ -64,7 +64,7 @@ class _RSSMainPictureState extends State<RSSMainPicture> {
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasData) {
-            var feed = snapshot.hasData;
+            var feed = snapshot.data!;
             var items = feed.items;
             return ListView.builder(
               itemCount: items?.length,
@@ -77,7 +77,7 @@ class _RSSMainPictureState extends State<RSSMainPicture> {
                     }
                   },
                   child: ListTile(
-                    title: Text(item.title),
+                    title: Text(item.title!),
                     subtitle: Text("${item.pubDate!}"),
                   ),
                 );
